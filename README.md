@@ -1,4 +1,7 @@
 # Find-Euler-Path
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/urastogi885/find-euler-path/blob/main/LICENSE)
+
+## Overview
 The goal of this project is to find if an Euler tour (not Euler path) exists for given undirected, connected, simple 
 graphs, and to print such a tour, if they do indeed have one.
 
