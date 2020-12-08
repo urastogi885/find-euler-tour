@@ -7,6 +7,7 @@ class Graph:
         self.adj_txt = adjacency_list
         self.vertices, self.edges = [], []
         self.get_vertices()
+        self.edge_check_mat = np.ones((len(self.vertices), len(self.vertices)), dtype=np.uint8)
         self.get_edges()
         self.is_eulerian = self.check_eulerian()
 
@@ -19,16 +20,15 @@ class Graph:
         adj_txt.close()
 
     def get_edges(self):
-        edge_check_mat = np.zeros((len(self.vertices), len(self.vertices)))
         adj_txt = open(self.adj_txt, 'r')
         for line in adj_txt.readlines():
-            edges = [int(i) for i in line.split()]
-            for j in range(1, len(edges)):
-                edge = (edges[0]-1, edges[j]-1)
-                if not (edge_check_mat[edge[0]][edge[1]] and edge_check_mat[edge[1]][edge[0]]):
-                    self.edges.append(edge)
-                    edge_check_mat[edge[0]][edge[1]] = 1
-                    edge_check_mat[edge[1]][edge[0]] = 1
+            vertices = [int(i) for i in line.split()]
+            for j in range(1, len(vertices)):
+                edge = (vertices[0]-1, vertices[j]-1)
+                if self.edge_check_mat[edge[0]][edge[1]] and self.edge_check_mat[edge[1]][edge[0]]:
+                    self.edges.append((edge[0]+1, edge[1]+1))
+                    self.edge_check_mat[edge[0]][edge[1]] = 0
+                    self.edge_check_mat[edge[1]][edge[0]] = 0
 
     def check_eulerian(self):
         adj_txt = open(self.adj_txt, 'r')
@@ -47,6 +47,15 @@ script, adjacency_txt = argv
 
 if __name__ == '__main__':
     graph = Graph(adjacency_txt)
-    print(graph.vertices)
-    print(graph.edges)
-    print(graph.is_eulerian)
+    if not graph.is_eulerian:
+        print('Euler tour does not exist for the given graph!')
+        quit()
+    v = 0
+    euler_tour = [v+1]
+    while 0 in graph.edge_check_mat[v]:
+        w = np.where(graph.edge_check_mat[v] == 0)[0][-1]
+        graph.edge_check_mat[v][w] = 1
+        graph.edge_check_mat[w][v] = 1
+        v = w
+        euler_tour.append(v+1)
+    print(euler_tour)
