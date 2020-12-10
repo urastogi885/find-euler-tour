@@ -46,8 +46,7 @@ void display( Node **set, size_t n )
 
 int main( int argc, char *argv[] )
 {
-    FILE *ifp;
-
+    // check if graph has been provided by the user as an input
 	if ( argc < 2 )
 	{
 		printf( "Graph input file not provided!\n" );
@@ -56,6 +55,7 @@ int main( int argc, char *argv[] )
     clock_t begin = clock();
 
     // read input from file
+    FILE *ifp;
 	ifp = fopen( argv[1], "r" );
     // ifp = fopen( "input/input_example.txt", "r" );
 
@@ -65,30 +65,53 @@ int main( int argc, char *argv[] )
 	while ( fgets( l, sizeof l, ifp ) != NULL ) num_v++;
 	rewind( ifp );
 
-    // create an array of empty linked list (adjacency list)
+    // create an array of empty linked list to store the adjaccency list of the graph
     Node * adj_list[num_v];
     for ( int i=0; i < num_v; i++ ) adj_list[i] = NULL;
 
+    // create an adjacency list using the input text file
     char line[1024];
     unsigned int counter = 0;
+    // define variable to check if euler tour exists in the given graph
+    unsigned int check_eulerian = 1;
 	while (fgets(line, sizeof line, ifp) != NULL)
 	{
         int src_vertex, dst_vertex;
+        int degree = 0;
 		char * pch;
 		pch = strtok(line, " \n\r");
+        // get source vertex    // TODO: remove the comment below. add it to the report instead 
+        // not storing the source vertex since the index of array will provide us the source veretx
 		sscanf(pch, "%d", &src_vertex);
 		pch = strtok(NULL, " \n\r");
 
+        // get various vertices forming an edge with the source vertex
 		while (pch != NULL)
 		{
-			// there is an edge from src_vertex to dst_vertex
 			sscanf(pch, "%d", &dst_vertex);
+            // add vertex to the adjacency list
             push_front( &adj_list[counter], dst_vertex-1 );
 			pch = strtok(NULL, " \n\r");
+            degree++;
 		}
+
+        // check if graph contains an euler tour
+        if ( degree%2 != 0 ) 
+        {
+            check_eulerian = 0;
+            break;
+        }
+
+        // increment counter to enter vertices in the next linked list
         counter++;
 	}
     // display( adj_list, sizeof( adj_list )/sizeof( *adj_list ) );
     fclose( ifp );
+
+    if ( !check_eulerian )
+    {
+        printf("The given graph does not contain an Euler tour!\n");
+        return 0;
+    }
     printf("Time taken = %lf\n", ((double)clock()-begin)/CLOCKS_PER_SEC);
 }
