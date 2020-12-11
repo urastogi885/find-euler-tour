@@ -3,6 +3,9 @@
 #include <string.h>
 #include <time.h>
 
+#define EULER_TOUR_FILE "A.txt"
+#define OPERATIONS_NUM_FILE "C.txt"
+
 // Define a new structure for singly-linked lists
 typedef struct Node 
 {
@@ -52,20 +55,6 @@ void delete_node(struct Node **head, int data)
 
     // Free memory 
     free(temp);
-}
-
-const char * get_output_filename(char *input_filename)
-{
-    // Define variable to store name of the output file
-    const char *filename;
-
-    if ( strstr(input_filename, "in1.txt") != NULL )  filename = "A1.txt";
-    else if ( strstr(input_filename, "in2.txt") != NULL )  filename = "A2.txt";
-    else if ( strstr(input_filename, "in3.txt") != NULL )  filename = "A3.txt";
-    else if ( strstr(input_filename, "in4.txt") != NULL )  filename = "A4.txt";
-    else if ( strstr(input_filename, "in5.txt") != NULL )  filename = "A5.txt";
-    else    filename = "A.txt";
-    return filename;
 }
 
 int main( int argc, char *argv[] )
@@ -139,7 +128,7 @@ int main( int argc, char *argv[] )
     fclose( ifp );
 
     // Open the output file and add whether an Euler tour exists for the graph 
-    ifp = fopen( get_output_filename(argv[1]), "w+" );
+    ifp = fopen( EULER_TOUR_FILE, "w+" );
     fprintf( ifp, "%d\n", check_eulerian);
 
     // Check if an Euler tour exists in the graph
