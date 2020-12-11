@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+// Define a new structure for singly-linked lists
 typedef struct Node 
 {
     // Data of the node
@@ -53,6 +54,20 @@ void delete_node(struct Node **head, int data)
     free(temp);
 }
 
+const char * get_output_filename(char *input_filename)
+{
+    // Define variable to store name of the output file
+    const char *filename;
+
+    if ( strstr(input_filename, "in1.txt") != NULL )  filename = "A1.txt";
+    else if ( strstr(input_filename, "in2.txt") != NULL )  filename = "A2.txt";
+    else if ( strstr(input_filename, "in3.txt") != NULL )  filename = "A3.txt";
+    else if ( strstr(input_filename, "in4.txt") != NULL )  filename = "A4.txt";
+    else if ( strstr(input_filename, "in5.txt") != NULL )  filename = "A5.txt";
+    else    filename = "A.txt";
+    return filename;
+}
+
 int main( int argc, char *argv[] )
 {
     // Check if graph has been provided by the user as an input
@@ -82,7 +97,7 @@ int main( int argc, char *argv[] )
     for ( int i=0; i < num_v; i++ ) adj_list[i] = NULL;
 
     // Define variable to check if euler tour exists in the given graph
-    unsigned int check_eulerian = 1;
+    int check_eulerian = 1;
 
     // Create an adjacency list using the input text file
     char line[1024];
@@ -123,11 +138,16 @@ int main( int argc, char *argv[] )
     // Close the text file since adjacency list has been created
     fclose( ifp );
 
+    // Open the output file and add whether an Euler tour exists for the graph 
+    ifp = fopen( get_output_filename(argv[1]), "w+" );
+    fprintf( ifp, "%d\n", check_eulerian);
+
     // Check if an Euler tour exists in the graph
     if ( !check_eulerian )
     {
-        // TODO: Generate appropriate output file instead
         printf("The given graph does not contain an Euler tour!\n");
+        // Close the output file
+        fclose( ifp );
         return 0;
     }
 
@@ -158,13 +178,16 @@ int main( int argc, char *argv[] )
     }
 
     // Print the Euler tour
-    // TODO: store this in a text file instead
+    // TODO: store this in a text file
     while (euler_tour != NULL) 
-    { 
-        printf(" %d ", euler_tour->num); 
+    {
+        printf( " %d ", euler_tour->num );
+        fprintf( ifp, "%d ", euler_tour->num);
         euler_tour = euler_tour->next;
     }
     printf( "\n" );
+
+    fclose( ifp );
 
     // Print overall time taken in seconds
     printf("Time taken = %lf\n", ((double)clock()-begin)/CLOCKS_PER_SEC);
