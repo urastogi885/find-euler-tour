@@ -5,30 +5,29 @@ from sys import argv
 class Graph:
     def __init__(self, adjacency_list):
         self.adj_txt = adjacency_list
-        self.vertices, self.edges = [], []
-        self.get_vertices()
-        self.edge_check_mat = np.ones((len(self.vertices), len(self.vertices)), dtype=np.uint8)
-        self.get_edges()
+        self.count_vertices = self.get_vertices()
+        self.edge_check_mat = np.ones((self.count_vertices, self.count_vertices), dtype=np.uint8)
+        self.create_edge_check_mat()
         self.is_eulerian = self.check_eulerian()
 
     def get_vertices(self):
         adj_txt = open(self.adj_txt, 'r')
         count = 0
         for _ in adj_txt.readlines():
-            self.vertices.append(count)
             count += 1
         adj_txt.close()
+        return count
 
-    def get_edges(self):
+    def create_edge_check_mat(self):
         adj_txt = open(self.adj_txt, 'r')
         for line in adj_txt.readlines():
             vertices = [int(i) for i in line.split()]
             for j in range(1, len(vertices)):
                 edge = (vertices[0]-1, vertices[j]-1)
                 if self.edge_check_mat[edge[0]][edge[1]] and self.edge_check_mat[edge[1]][edge[0]]:
-                    self.edges.append((edge[0]+1, edge[1]+1))
                     self.edge_check_mat[edge[0]][edge[1]] = 0
                     self.edge_check_mat[edge[1]][edge[0]] = 0
+        adj_txt.close()
 
     def check_eulerian(self):
         adj_txt = open(self.adj_txt, 'r')
