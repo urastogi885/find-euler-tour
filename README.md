@@ -26,4 +26,4 @@ _|V|_.
 (4,5)
 (5,6)
  ```
-- Each row lists edges from 1 vertex of the graph.
+- Each row lists edges from a vertex of the graph.
