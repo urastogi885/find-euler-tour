@@ -6,7 +6,7 @@
 #define EULER_TOUR_FILE "A.txt"
 #define OPERATIONS_NUM_FILE "C.txt"
 
-// Define a new structure for singly-linked lists
+// Define a new structure for linked-lists
 typedef struct Node 
 {
     // Data of the node
@@ -15,49 +15,21 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-void push_front( Node **head, int data )
-{
-    Node *new_node = malloc( sizeof( Node ) );
-    // Add data to the new node
-    new_node->num = data;
-    // Point next of the node to the original linked-list
-    new_node->next = *head;
-    // Assign head to new node
-    *head = new_node;
-}
+/*
+@brief: Add a new node to a linked-list
+@param: head - pointer to the head of the linked-list
+        data - data of the new node to be added
+@return: none
+*/
+void push_front( Node **head, int data );
 
-void delete_node( struct Node **head, int data ) 
-{ 
-    // Store head node 
-    struct Node* temp = *head, *prev; 
-  
-    // If head node itself holds the data to be deleted 
-    if ( temp != NULL && temp->num == data ) 
-    {
-        // Change head
-        *head = temp->next;
-        // Free old head
-        free( temp );
-        return; 
-    } 
-  
-    // Search for the data to be deleted, keep track of the 
-    // previous node as we need to change 'prev->next' 
-    while ( temp != NULL && temp->num != data ) 
-    { 
-        prev = temp; 
-        temp = temp->next; 
-    }
-  
-    // If data was not present in linked list 
-    if ( temp == NULL ) return; 
-  
-    // Unlink the node from linked list 
-    prev->next = temp->next; 
-
-    // Free memory 
-    free( temp );
-}
+/*
+@brief: Delete a node from a linked-list
+@param: head - pointer to the head of the linked-list
+        data - data of the node to be deleted
+@return: none
+*/
+void delete_node( Node **head, int data );
 
 int main( int argc, char *argv[] )
 {
@@ -230,4 +202,50 @@ int main( int argc, char *argv[] )
 
     // Indicate successful execution for finding an euler tour in the input graph
     return 1;
+}
+
+// Implementation of the function to add a new node to a given linked-list
+void push_front( Node **head, int data )
+{
+    Node *new_node = malloc( sizeof( Node ) );
+    // Add data to the new node
+    new_node->num = data;
+    // Point next of the node to the original linked-list
+    new_node->next = *head;
+    // Assign head to new node
+    *head = new_node;
+}
+
+// Implementation of the function to delete a node to a given linked-list
+void delete_node( struct Node **head, int data ) 
+{
+    // Store head node
+    struct Node* temp = *head, *prev;
+
+    // If head node itself holds the data to be deleted
+    if ( temp != NULL && temp->num == data )
+    {
+        // Change head
+        *head = temp->next;
+        // Free old head
+        free( temp );
+        return;
+    }
+  
+    // Search for the data to be deleted, keep track of the
+    // previous node as we need to change 'prev->next'
+    while ( temp != NULL && temp->num != data )
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // If data was not present in linked list
+    if ( temp == NULL ) return;
+
+    // Unlink the node from linked list
+    prev->next = temp->next;
+
+    // Free memory
+    free( temp );
 }
