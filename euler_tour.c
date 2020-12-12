@@ -1,8 +1,10 @@
+// Add necessary headers
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
+// Define names of output files
 #define EULER_TOUR_FILE "A.txt"
 #define OPERATIONS_NUM_FILE "C.txt"
 
