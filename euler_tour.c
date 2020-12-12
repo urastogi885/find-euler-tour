@@ -8,6 +8,9 @@
 #define EULER_TOUR_FILE "A.txt"
 #define OPERATIONS_NUM_FILE "C.txt"
 
+// Define global variable to count operations
+unsigned int count_operations = 0;
+
 // Define a new structure for linked-lists
 typedef struct Node 
 {
@@ -41,10 +44,6 @@ void delete_node( Node **head, int data );
 */
 int main( int argc, char *argv[] )
 {
-    // Initialize variable to count all the operations
-    // Note that any operations pertaining to the counting the operations have been excluded from the count
-    unsigned int count_operations = 0;
-
     // Check if graph has been provided by the user as an input
 	if ( argc < 2 )
 	{
@@ -76,9 +75,8 @@ int main( int argc, char *argv[] )
     // Create an adjacency list using the input text file
     char line[1024];
     unsigned int counter = 0;
-    unsigned int num_edges = 0;
 
-    // Increment operations count
+    // Increment operations count for all the above commands
     count_operations += ( 2 * num_v ) + 10;
 
     // Go through each line of the text file to create the adjacency list
@@ -104,8 +102,8 @@ int main( int argc, char *argv[] )
             // Add vertex to the adjacency list
             push_front( &adj_list[counter], dst_vertex-1 );
 			pch = strtok( NULL, " \n\r" );
+            // Increment the degree of the source vertex
             degree++;
-            num_edges++;
             // Increment operations count for the above commands
             count_operations += 5;
 		}
@@ -145,7 +143,7 @@ int main( int argc, char *argv[] )
         // Store total operations in another text file
         FILE *ofp;
         ofp = fopen( OPERATIONS_NUM_FILE, "w+" );
-        fprintf( ofp, "Total number of operations is: %d\n", count_operations );
+        fprintf( ofp, "Total number of operations is: %d", count_operations );
         fclose( ofp );
 
         // Close the output text file that stores the Euler tour if it exists
@@ -166,13 +164,16 @@ int main( int argc, char *argv[] )
     euler_tour->num = v + 1;
     euler_tour->next = NULL;
 
+    // Increment operations count for the above commands
+    count_operations += 5;
+
     // Go through all the edges to find an euler tour
     while ( adj_list[v] != NULL )
     {
         // Get the other vertex corresponding to the edge v and head of linked-list associated with v
         w = adj_list[v]->num;
 
-        // Delete edge (v,w) and (w,v)
+        // Delete all instances of the edge (v,w) from the adjacency lists
         delete_node( &adj_list[v], w );
         delete_node( &adj_list[w], v );
 
@@ -181,16 +182,18 @@ int main( int argc, char *argv[] )
 
         // Add this edge to the Euler tour
         push_front( &euler_tour, v + 1 );
-    }
 
-    // Increment operations count for the above commands and loop to find the Euler tour
-    count_operations += ( 5 * num_edges ) + 5;
+        // Increment operations count for the above commands
+        // except delete node as it is being counted internally
+        count_operations += 6;
+    }
 
     // Store the Euler tour as output in a text file
     while ( euler_tour != NULL ) 
     {
         fprintf( ifp, "%d ", euler_tour->num );
         euler_tour = euler_tour->next;
+
         // Increment operations count for the above commands
         count_operations += 2;
     }
@@ -201,7 +204,7 @@ int main( int argc, char *argv[] )
     // Increment operations count for the next commands, store it in an output text file, and print it on the terminal
     count_operations += 5;
     ifp = fopen( OPERATIONS_NUM_FILE, "w+" );
-    fprintf( ifp, "Total number of operations is: %d\n", count_operations );
+    fprintf( ifp, "Total number of operations is: %d", count_operations );
     fclose( ifp );
     printf( "Total operations: %d\n", count_operations );
 
@@ -227,6 +230,10 @@ void push_front( Node **head, int data )
 // Implementation of the function to delete a node to a given linked-list
 void delete_node( struct Node **head, int data ) 
 {
+    // Increment operations count for the above commands
+    // except the while loop as it is already accounted for 
+    count_operations += 6;
+
     // Store head node
     struct Node* temp = *head, *prev;
 
@@ -246,6 +253,9 @@ void delete_node( struct Node **head, int data )
     {
         prev = temp;
         temp = temp->next;
+
+        // Increment operations count
+        count_operations += 2;
     }
 
     // If data was not present in linked list
