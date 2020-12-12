@@ -31,6 +31,12 @@ void push_front( Node **head, int data );
 */
 void delete_node( Node **head, int data );
 
+/*
+@brief: Find an Euler tour, if it exists, from a given graph
+@param: argc - count no. of inputs
+        argv - location of input graph in the form of a text file
+@return: Indicate whether Euler tour found in the given graph
+*/
 int main( int argc, char *argv[] )
 {
     // Initialize variable to count all the operations
