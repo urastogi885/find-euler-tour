@@ -20,27 +20,27 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-/*
-@brief: Add a new node to a linked-list
-@param: head - pointer to the head of the linked-list
-        data - data of the new node to be added
-@return: none
+/**
+*   @brief: Add a new node to a given linked-list
+*   @param: head - pointer to the head of the linked-list
+*           data - data of the new node to be added
+*   @return: none
 */
 void push_front( Node **head, int data );
 
-/*
-@brief: Delete a node from a linked-list
-@param: head - pointer to the head of the linked-list
-        data - data of the node to be deleted
-@return: none
+/**
+*   @brief: Delete a node from a given linked-list
+*   @param: head - pointer to the head of the linked-list
+*           data - data of the node to be deleted
+*   @return: none
 */
 void delete_node( Node **head, int data );
 
-/*
-@brief: Find an Euler tour, if it exists, from a given graph
-@param: argc - count no. of inputs
-        argv - location of input graph in the form of a text file
-@return: Indicate whether Euler tour found in the given graph
+/**
+*   @brief: Find an Euler tour, if it exists, from a given graph
+*   @param: argc - count no. of inputs
+*           argv - location of input graph in the form of a text file
+*   @return: Indicate whether Euler tour found in the given graph
 */
 int main( int argc, char *argv[] )
 {
@@ -77,7 +77,8 @@ int main( int argc, char *argv[] )
     unsigned int counter = 0;
 
     // Increment operations count for all the above commands
-    count_operations += ( 2 * num_v ) + 10;
+    // excluding the file reading commands
+    count_operations +=  num_v + 10;
 
     // Go through each line of the text file to create the adjacency list
 	while ( fgets( line, sizeof line, ifp ) != NULL )
@@ -104,23 +105,25 @@ int main( int argc, char *argv[] )
 			pch = strtok( NULL, " \n\r" );
             // Increment the degree of the source vertex
             degree++;
-            // Increment operations count for the above commands
-            count_operations += 5;
 		}
 
         // Check if graph contains an euler tour
         if ( degree % 2 != 0 ) 
         {
             // Increment operations count by 2 for the next commands
-            count_operations += 2;
+            count_operations += degree + 2;
+
             check_eulerian = 0;
             break;
         }
 
         // Increment counter to enter vertices in the next linked list
         counter++;
-        // Increment operations count for the above commands
-        count_operations += 8;
+
+        // Increment operations count for above commands
+        // Note that most of the commands in this loop are related reading the input file, hence they have been excluded
+        // Only the ones related to degree evaluation of a vertex have been included towards the count of operations
+        count_operations += degree + 3;
 	}
 
     // Close the text file since adjacency list has been created
@@ -130,14 +133,12 @@ int main( int argc, char *argv[] )
     ifp = fopen( EULER_TOUR_FILE, "w+" );
     fprintf( ifp, "%d\n", check_eulerian );
 
-    // Increment operations count for the above commands (outside of the while loop)
-    count_operations += 3;
-
     // Check if an Euler tour exists in the graph
     if ( !check_eulerian )
     {
-        // Increment operations count for the next commands and print it on the terminal
-        count_operations += 6;
+        // Increment operations count for the 3 print statements
+        // Operations related to editing output files are excluded from count
+        count_operations += 3;
         printf( "Total operations: %d\n", count_operations );
 
         // Store total operations in another text file
@@ -188,25 +189,25 @@ int main( int argc, char *argv[] )
         count_operations += 6;
     }
 
-    // Store the Euler tour as output in a text file
+    // Store the Euler tour in output file
     while ( euler_tour != NULL ) 
     {
         fprintf( ifp, "%d ", euler_tour->num );
         euler_tour = euler_tour->next;
-
-        // Increment operations count for the above commands
-        count_operations += 2;
     }
 
     // Close the output text file that stores the Euler tour if it exists
     fclose( ifp );
 
-    // Increment operations count for the next commands, store it in an output text file, and print it on the terminal
-    count_operations += 5;
+    // Increment operations count for the 2 print statements below and store it in an output text file
+    count_operations += 2;
+    // Print total no. of operations
+    printf( "Total operations: %d\n", count_operations );
+
+    // Write the total no. of operations to the output file
     ifp = fopen( OPERATIONS_NUM_FILE, "w+" );
     fprintf( ifp, "Total number of operations is: %d", count_operations );
     fclose( ifp );
-    printf( "Total operations: %d\n", count_operations );
 
     // Print overall time taken in seconds
     printf( "Time taken = %lf\n", ((double)clock()-begin)/CLOCKS_PER_SEC );
@@ -215,7 +216,6 @@ int main( int argc, char *argv[] )
     return 1;
 }
 
-// Implementation of the function to add a new node to a given linked-list
 void push_front( Node **head, int data )
 {
     Node *new_node = malloc( sizeof( Node ) );
@@ -227,7 +227,6 @@ void push_front( Node **head, int data )
     *head = new_node;
 }
 
-// Implementation of the function to delete a node to a given linked-list
 void delete_node( struct Node **head, int data ) 
 {
     // Increment operations count for the above commands
