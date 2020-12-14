@@ -10,6 +10,7 @@
 
 // Define global variable to count operations
 unsigned int count_operations = 0;
+unsigned int max_edge_operations = 0;
 
 // Define a new structure for linked-lists
 typedef struct Node 
@@ -72,26 +73,25 @@ int main( int argc, char *argv[] )
     // Define variable to check if euler tour exists in the given graph
     int check_eulerian = 1;
 
-    // Create an adjacency list using the input text file
+    // Create an adjacent list using the input text file
     char line[1024];
-    unsigned int counter = 0;
+
+    // Initialize source and destination vertices to represent an edge and degree
+    unsigned int src_vertex, dst_vertex, degree;
 
     // Increment operations count for all the above commands
     // excluding the file reading commands
-    count_operations +=  num_v + 10;
+    count_operations +=  num_v + 5;
 
-    // Go through each line of the text file to create the adjacency list
+    // Go through each line of the text file to create the adjacent list
 	while ( fgets( line, sizeof line, ifp ) != NULL )
 	{
-        // Initialize source and destination vertices to represent an edge
-        unsigned int src_vertex, dst_vertex;
-        // Initialize degree of each vertex as 0
-        unsigned int degree = 0;
+        // Start degree of each vertex with 0
+        degree = 0;
         // Initialize finder to search for vertices in the text
 		char * pch;
 		pch = strtok( line, " \n\r" );
         // Find the source vertex
-        // Not storing the source vertex in the adjacency since the index of array will provide us the source veretx
 		sscanf( pch, "%d", &src_vertex );
 		pch = strtok( NULL, " \n\r" );
 
@@ -100,8 +100,8 @@ int main( int argc, char *argv[] )
 		{
             // Find next destination vertex
 			sscanf( pch, "%d", &dst_vertex );
-            // Add vertex to the adjacency list
-            push_front( &adj_list[counter], dst_vertex-1 );
+            // Add vertex to the adjacent list
+            push_front( &adj_list[src_vertex - 1], dst_vertex - 1 );
 			pch = strtok( NULL, " \n\r" );
             // Increment the degree of the source vertex
             degree++;
@@ -111,14 +111,11 @@ int main( int argc, char *argv[] )
         if ( degree % 2 != 0 ) 
         {
             // Increment operations count by 2 for the next commands
-            count_operations += degree + 2;
+            count_operations += degree + 3 + 2;
 
             check_eulerian = 0;
             break;
         }
-
-        // Increment counter to enter vertices in the next linked list
-        counter++;
 
         // Increment operations count for above commands
         // Note that most of the commands in this loop are related reading the input file, hence they have been excluded
@@ -126,7 +123,7 @@ int main( int argc, char *argv[] )
         count_operations += degree + 3;
 	}
 
-    // Close the text file since adjacency list has been created
+    // Close the text file since adjacent list has been created
     fclose( ifp );
 
     // Open the output file and add whether an Euler tour exists for the graph 
@@ -144,6 +141,7 @@ int main( int argc, char *argv[] )
         // Store total operations in another text file
         FILE *ofp;
         ofp = fopen( OPERATIONS_NUM_FILE, "w+" );
+        fprintf( ofp, "Maximum number of operations charged to any single edge is: %d\n", max_edge_operations );
         fprintf( ofp, "Total number of operations is: %d", count_operations );
         fclose( ofp );
 
@@ -159,6 +157,7 @@ int main( int argc, char *argv[] )
     // Use the first vertex as the starting point
     unsigned int v = 0;
     unsigned int w = 0;
+    unsigned int prev_cnt, temp;
 
     // Initialize a linked-list to store the euler tour
     Node *euler_tour = malloc( sizeof( Node ) );
@@ -171,10 +170,13 @@ int main( int argc, char *argv[] )
     // Go through all the edges to find an euler tour
     while ( adj_list[v] != NULL )
     {
+        // For counting commands pertaining to an edge
+        prev_cnt = count_operations;
+
         // Get the other vertex corresponding to the edge v and head of linked-list associated with v
         w = adj_list[v]->num;
 
-        // Delete all instances of the edge (v,w) from the adjacency lists
+        // Delete all instances of the edge (v,w) from the adjacent lists
         delete_node( &adj_list[v], w );
         delete_node( &adj_list[w], v );
 
@@ -183,6 +185,10 @@ int main( int argc, char *argv[] )
 
         // Add this edge to the Euler tour
         push_front( &euler_tour, v + 1 );
+
+        // Get the maximum no. of operations on any edge
+        temp = count_operations - prev_cnt;
+        if (temp > max_edge_operations) max_edge_operations = temp;
 
         // Increment operations count for the above commands
         // except delete node as it is being counted internally
@@ -206,6 +212,7 @@ int main( int argc, char *argv[] )
 
     // Write the total no. of operations to the output file
     ifp = fopen( OPERATIONS_NUM_FILE, "w+" );
+    fprintf( ifp, "Maximum number of operations charged to any single edge is: %d\n", max_edge_operations );
     fprintf( ifp, "Total number of operations is: %d", count_operations );
     fclose( ifp );
 
