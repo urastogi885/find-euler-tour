@@ -7,10 +7,13 @@ graphs, and to find such a tour, if they do indeed have one. The project has bee
 the best asymptotic time complexity as well as the best constant factors, i.e., the usage
 of unnecessary operations were avoided. A final time complexity of **Θ**(|V||E|) was observed 
 from reading the input till printing out an Euler tour, is it exists. Note that |V| and |E| 
-represent total no. of vertices and edges in the given graph, G, respectively.
+represent total no. of vertices and edges in the given graph, G, respectively. The |V| factor 
+in time complexity comes due to the **Θ**(|V|) time complexity of deletion since we have to
+search for the element to be deleted. Refer the [UML activity diagram](https://github.com/urastogi885/find-euler-tour/blob/main/uml/activity_diagram.pdf) 
+for further understanding of the code.
 
 ## Todo
-- Add visulization of the Euler tour found
+- Add visualization of the Euler tour found
 
 ## Input Format
 - The graph is stored in a adjacent list format. In each of the input graphs, vertices are numbered from 1 to
