@@ -39,7 +39,7 @@ _|V|_.
 - Open the terminal, move into your workspace, clone the repository, and move into the project directory.
 ```
 cd <your_worspace>/
-git clone https://github.com/urastogi885/find-euler-path.git
+git clone https://github.com/urastogi885/find-euler-tour.git
 cd find-euler-path/
 ```
 - Compile the source to create an executable
