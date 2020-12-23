@@ -1,3 +1,9 @@
+/**
+ * @file    euler_tour.c
+ * @author  Umang Rastogi
+ * @brief   Check an Euler tour possible for the given and find the tour if it exists
+ */
+
 // Add necessary headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,27 +28,27 @@ typedef struct Node
 } Node;
 
 /**
-*   @brief: Add a new node to a given linked-list
-*   @param: head - pointer to the head of the linked-list
-*           data - data of the new node to be added
-*   @return: none
-*/
+ * @brief: Add a new node to a given linked-list
+ * @param: head - pointer to the head of the linked-list
+ *         data - data of the new node to be added
+ * @return: none
+ */
 void push_front( Node **head, int data );
 
 /**
-*   @brief: Delete a node from a given linked-list
-*   @param: head - pointer to the head of the linked-list
-*           data - data of the node to be deleted
-*   @return: none
-*/
+ * @brief: Delete a node from a given linked-list
+ * @param: head - pointer to the head of the linked-list
+ *         data - data of the node to be deleted
+ * @return: none
+ */
 void delete_node( Node **head, int data );
 
 /**
-*   @brief: Find an Euler tour, if it exists, from a given graph
-*   @param: argc - count no. of inputs
-*           argv - location of input graph in the form of a text file
-*   @return: Indicate whether Euler tour found in the given graph
-*/
+ * @brief: Find an Euler tour, if it exists, from a given graph
+ * @param: argc - count no. of inputs
+ *         argv - location of input graph in the form of a text file
+ * @return: Indicate whether Euler tour found in the given graph
+ */
 int main( int argc, char *argv[] )
 {
     // Check if graph has been provided by the user as an input
