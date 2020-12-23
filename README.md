@@ -2,8 +2,15 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/urastogi885/find-euler-path/blob/main/LICENSE)
 
 ## Overview
-The goal of this project is to find if an Euler tour (not Euler path) exists for given undirected, connected, simple 
-graphs, and to print such a tour, if they do indeed have one.
+The goal of this project is to find if an Euler tour exists for given undirected, connected, simple 
+graphs, and to find such a tour, if they do indeed have one. The project has been developed to get 
+the best asymptotic time complexity as well as the best constant factors, i.e., the usage
+of unnecessary operations were avoided. A final time complexity of **Θ**(|V||E|) was observed 
+from reading the input till printing out an Euler tour, is it exists. Note that |V| and |E| 
+represent total no. of vertices and edges in the given graph, G, respectively.
+
+## Todo
+- Add visulization of the Euler tour found
 
 ## Input Format
 - The graph is stored in a adjacent list format. In each of the input graphs, vertices are numbered from 1 to
@@ -28,16 +35,6 @@ _|V|_.
  ```
 - Each row lists edges from a vertex of the graph.
 
-## Output Format
-- The total no. of operations and the time taken for execution are printed out on the terminal.
-- 2 files, *A.txt* and *C.txt*, are generated that contain an Euler tour, if it exists, and the total no. of operations respectively.
-- In *A.txt*, there are 2 lines. First line pertains to existence of an Euler tour in the given graph, denoted 1 or 0. Second line 
-contains the Euler tour, if it exists. For example, if *In2.txt* is the given graph:
-```
-1
-1 2 3 4 2 5 4 7 5 6 7 8 3 1 
-```
-
 ## Run
 - Open the terminal, move into your workspace, clone the repository, and move into the project directory.
 ```
@@ -56,3 +53,13 @@ For instance:
 ./euler_tour input/in4.txt
 ```
 - Note that the location of the input file will be relative to your current directory
+
+## Output Format
+- The total no. of operations and the time taken for execution are printed out on the terminal.
+- 2 files, *A.txt* and *C.txt*, are generated that contain an Euler tour, if it exists, and the total no. of operations respectively.
+- In *A.txt*, there are 2 lines. First line pertains to existence of an Euler tour in the given graph, denoted 1 or 0. Second line 
+contains the Euler tour, if it exists. For example, if *In2.txt* is the given graph:
+```
+1
+1 2 3 4 2 5 4 7 5 6 7 8 3 1 
+```
