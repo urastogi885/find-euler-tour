@@ -1,4 +1,4 @@
-# Find-Euler-Path
+# Find-Euler-Tour
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/urastogi885/find-euler-path/blob/main/LICENSE)
 
 ## Overview
