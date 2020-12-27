@@ -67,7 +67,9 @@ class Graph:
         # Define open-cv video recorder to save animation
         video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
         video_output = cv2.VideoWriter('euler_tour.avi', video_format, 2.0, (img_size[1], img_size[0]))
-        video_output.write(img)
+        # Record first frame for more duration
+        for _ in range(4):
+            video_output.write(img)
 
         # Draw the Euler tour
         for i in range(len(euler_tour) - 1):
