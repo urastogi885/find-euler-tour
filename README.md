@@ -1,4 +1,5 @@
 # Find-Euler-Tour
+[![Build Status](https://travis-ci.org/urastogi885/find-euler-tour.svg?branch=master)](https://travis-ci.org/github/urastogi885/find-euler-tour)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/urastogi885/find-euler-path/blob/main/LICENSE)
 
 ## Overview
