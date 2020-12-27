@@ -1,16 +1,25 @@
 import numpy as np
+import cv2
 from sys import argv
 
 
 class Graph:
-    def __init__(self, adjacency_list):
+    def __init__(self, adjacency_list: str):
+        """
+        Initialize a graph using an adjacency list as text input
+        :param adjacency_list: location of graph in txt format
+        """
+        self.img_scaler = 50
         self.adj_txt = adjacency_list
-        self.count_vertices = self.get_vertices()
-        self.edge_check_mat = np.ones((self.count_vertices, self.count_vertices), dtype=np.uint8)
+        self.num_vertices = self.count_vertices()
+        self.edge_check_mat = np.ones((self.num_vertices, self.num_vertices), dtype=np.uint8)
         self.create_edge_check_mat()
-        self.is_eulerian = self.check_eulerian()
 
-    def get_vertices(self):
+    def count_vertices(self) -> int:
+        """
+        Count the no .of vertices in the graph
+        :return: No. of vertices in the graph
+        """
         adj_txt = open(self.adj_txt, 'r')
         count = 0
         for _ in adj_txt.readlines():
@@ -18,27 +27,46 @@ class Graph:
         adj_txt.close()
         return count
 
-    def create_edge_check_mat(self):
+    def create_edge_check_mat(self) -> None:
+        """
+        Create an adjacency matrix of the graph
+        :return: nothing
+        """
         adj_txt = open(self.adj_txt, 'r')
         for line in adj_txt.readlines():
             vertices = [int(i) for i in line.split()]
             for j in range(1, len(vertices)):
                 edge = (vertices[0]-1, vertices[j]-1)
-                if self.edge_check_mat[edge[0]][edge[1]] and self.edge_check_mat[edge[1]][edge[0]]:
-                    self.edge_check_mat[edge[0]][edge[1]] = 0
-                    self.edge_check_mat[edge[1]][edge[0]] = 0
+                if self.edge_check_mat[edge[0], edge[1]] and self.edge_check_mat[edge[1], edge[0]]:
+                    self.edge_check_mat[edge[0], edge[1]] = 0
+                    self.edge_check_mat[edge[1], edge[0]] = 0
         adj_txt.close()
 
-    def check_eulerian(self):
-        adj_txt = open(self.adj_txt, 'r')
-        eulerian = True
-        for line in adj_txt.readlines():
-            vertex_degree = len(line.split()) - 1
-            if vertex_degree % 2 != 0:
-                eulerian = False
-                break
-        adj_txt.close()
-        return eulerian
+    def get_vertex_loc(self, vertex: int, img_size: int) -> tuple:
+        if vertex == 0 or vertex == (self.num_vertices // 2) + 1:
+            return self.img_scaler * (vertex+1), img_size // 2
+        elif 0 < vertex < (self.num_vertices // 2) + 1:
+            return self.img_scaler * (vertex+1), (img_size // 2) - (2 * self.img_scaler)
+        else:
+            return self.img_scaler * (self.num_vertices-vertex), (img_size // 2) + (2 * self.img_scaler)
+
+    def animate_euler_tour(self, euler_tour: str) -> None:
+        """
+        Create an animation of the Euler tour
+        :param euler_tour: order of vertices for the Euler tour
+        :return: nothing
+        """
+        x = self.img_scaler * ((self.num_vertices // 2) + 3)
+        graph_img = np.zeros((x, x, 3), dtype=np.uint8)
+        graph_img.fill(255)
+        for vertex in range(self.num_vertices):
+            for adj_vertex in range(self.num_vertices):
+                if self.edge_check_mat[vertex, adj_vertex] == 0 and self.edge_check_mat[adj_vertex, vertex] == 0:
+                    vertex_loc = self.get_vertex_loc(vertex, x)
+                    adj_vertex_loc = self.get_vertex_loc(adj_vertex, x)
+                    cv2.line(graph_img, vertex_loc, adj_vertex_loc, (0, 0, 0))
+
+        cv2.imwrite('img.jpg', graph_img)
 
 
 script, adjacency_txt = argv
@@ -46,15 +74,4 @@ script, adjacency_txt = argv
 
 if __name__ == '__main__':
     graph = Graph(adjacency_txt)
-    if not graph.is_eulerian:
-        print('Euler tour does not exist for the given graph!')
-        quit()
-    v = 0
-    euler_tour = [v+1]
-    while 0 in graph.edge_check_mat[v]:
-        w = np.where(graph.edge_check_mat[v] == 0)[0][-1]
-        graph.edge_check_mat[v][w] = 1
-        graph.edge_check_mat[w][v] = 1
-        v = w
-        euler_tour.append(v+1)
-    print(euler_tour)
+    graph.animate_euler_tour('C.txt')
