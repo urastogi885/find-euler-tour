@@ -15,8 +15,10 @@ for further understanding of the code.
 
 <p align="center">
   <img src="https://github.com/urastogi885/find-euler-tour/blob/main/images/euler_tour.gif">
-  <br><b>Figure 1 - An Euler-tour for the graph described below</b><br>
+  <br><b>Figure 1 - An Euler-tour for the graph described in in5.txt</b><br>
 </p>
+
+The graph for the above Euler tour can be accessed from [here](https://github.com/urastogi885/find-euler-tour/blob/main/input/in5.txt).
 
 ## Input Format
 - The graph is stored in a adjacent list format. In each of the input graphs, vertices are numbered from 1 to
