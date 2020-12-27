@@ -13,7 +13,6 @@ before_install:
 
 # Install the library dependencies
 install:
-  - sudo apt-get install python3
   - pip3 install numpy opencv-python matplotlib networkx
 
 # Run python scripts
