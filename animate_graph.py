@@ -21,7 +21,7 @@ class Graph:
         Count the no .of vertices in the graph
         :return: No. of vertices in the graph
         """
-        adj_txt = open(self.adj_txt, "r")
+        adj_txt = open(self.adj_txt, 'r')
         count = 0
         for _ in adj_txt.readlines():
             count += 1
@@ -36,7 +36,7 @@ class Graph:
         edges = []
         # An array to check whether the edge has already been added to the list
         edge_check_mat = np.ones((self.num_vertices, self.num_vertices), dtype=np.uint8)
-        adj_txt = open(self.adj_txt, "r")
+        adj_txt = open(self.adj_txt, 'r')
         for line in adj_txt.readlines():
             vertices = [int(i) for i in line.split()]
             for j in range(1, len(vertices)):
@@ -66,7 +66,7 @@ class Graph:
 
         # Define open-cv video recorder to save animation
         video_format = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-        video_output = cv2.VideoWriter('euler_tour.avi', video_format, 2.0, (img_size[1], img_size[0]))
+        video_output = cv2.VideoWriter("euler_tour.avi", video_format, 2.0, (img_size[1], img_size[0]))
         # Record first frame for more duration
         for _ in range(4):
             video_output.write(img)
@@ -90,6 +90,7 @@ class Graph:
                 video_output.write(img)
         video_output.release()
         cv2.destroyAllWindows()
+        os.system("rm -rf img.jpg")
 
 
 """
@@ -111,3 +112,4 @@ if __name__ == '__main__':
     if int(lines[0]):
         tour = [int(v) for v in lines[1].split()]
         graph.animate_euler_tour(tour)
+    euler_txt.close()
