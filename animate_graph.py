@@ -43,12 +43,21 @@ class Graph:
         adj_txt.close()
 
     def get_vertex_loc(self, vertex: int, img_size: int) -> tuple:
-        if vertex == 0 or vertex == (self.num_vertices // 2) + 1:
-            return self.img_scaler * (vertex+1), img_size // 2
-        elif 0 < vertex < (self.num_vertices // 2) + 1:
-            return self.img_scaler * (vertex+1), (img_size // 2) - (2 * self.img_scaler)
+        text_scalar = 5
+        if vertex == 0:
+            return (self.img_scaler * (vertex+1), img_size // 2), \
+                   (self.img_scaler * (vertex+1) - (2 * text_scalar), img_size // 2)
+        elif vertex == self.num_vertices // 2:
+            return (self.img_scaler * (vertex+1), img_size // 2), \
+                   (self.img_scaler * (vertex+1) + text_scalar, img_size // 2)
+        elif 0 < vertex < self.num_vertices // 2:
+            return (self.img_scaler * (vertex+1), (img_size // 2) - (2 * self.img_scaler)), \
+                   (self.img_scaler * (vertex+1) - text_scalar,
+                    (img_size // 2) - (2 * self.img_scaler) - text_scalar)
         else:
-            return self.img_scaler * (self.num_vertices-vertex), (img_size // 2) + (2 * self.img_scaler)
+            return (self.img_scaler * (self.num_vertices-vertex+1), (img_size // 2) + (2 * self.img_scaler)), \
+                   (self.img_scaler * (self.num_vertices-vertex+1) - text_scalar,
+                    (img_size // 2) + (2 * self.img_scaler) + (3*text_scalar))
 
     def animate_euler_tour(self, euler_tour: str) -> None:
         """
@@ -60,11 +69,15 @@ class Graph:
         graph_img = np.zeros((x, x, 3), dtype=np.uint8)
         graph_img.fill(255)
         for vertex in range(self.num_vertices):
+            vertex_loc = self.get_vertex_loc(vertex, x)
+            cv2.putText(graph_img, str(vertex + 1), vertex_loc[1], cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5, (0, 0, 0), 1, cv2.LINE_AA)
             for adj_vertex in range(self.num_vertices):
                 if self.edge_check_mat[vertex, adj_vertex] == 0 and self.edge_check_mat[adj_vertex, vertex] == 0:
-                    vertex_loc = self.get_vertex_loc(vertex, x)
                     adj_vertex_loc = self.get_vertex_loc(adj_vertex, x)
-                    cv2.line(graph_img, vertex_loc, adj_vertex_loc, (0, 0, 0))
+                    cv2.line(graph_img, vertex_loc[0], adj_vertex_loc[0], (0, 0, 0))
+                    self.edge_check_mat[vertex, adj_vertex] = 1
+                    self.edge_check_mat[adj_vertex, vertex] = 1
 
         cv2.imwrite('img.jpg', graph_img)
 
