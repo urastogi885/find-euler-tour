@@ -12,8 +12,10 @@ in time complexity comes due to the **Θ**(|V|) time complexity of deletion sinc
 search for the element to be deleted. Refer the [UML activity diagram](https://github.com/urastogi885/find-euler-tour/blob/main/uml/activity_diagram.pdf) 
 for further understanding of the code.
 
-## Todo
-- Add visualization of the Euler tour found
+<p align="center">
+  <img src="https://github.com/urastogi885/find-euler-tour/blob/main/images/euler_tour.gif">
+  <br><b>Figure 1 - An Euler-tour for the graph described below</b><br>
+</p>
 
 ## Input Format
 - The graph is stored in a adjacent list format. In each of the input graphs, vertices are numbered from 1 to
@@ -56,6 +58,13 @@ For instance:
 ./euler_tour input/in4.txt
 ```
 - Note that the location of the input file will be relative to your current directory
+- To get an animation of the Euler tour found, you can also run:
+```
+python3 animate_graph.py <input_file_location>
+For instance:
+python3 animate_graph.py input/in4.txt
+```
+- Note that the above mentioned python script internally executes the c file for the same input. 
 
 ## Output Format
 - The total no. of operations and the time taken for execution are printed out on the terminal.
