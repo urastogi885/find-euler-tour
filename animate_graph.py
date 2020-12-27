@@ -60,8 +60,8 @@ class Graph:
         pos = nx.spring_layout(graph_img)
         # Draw the graph and save it
         nx.draw_networkx(graph_img, pos=pos, with_labels=True)
-        plt.savefig(fname="img.jpg")
-        img = cv2.imread("img.jpg")
+        plt.savefig(fname="img.png")
+        img = cv2.imread("img.png")
         img_size = img.shape[:2]
 
         # Define open-cv video recorder to save animation
@@ -74,14 +74,14 @@ class Graph:
         # Draw the Euler tour
         for i in range(len(euler_tour) - 1):
             nx.draw_networkx_nodes(graph_img, pos, [euler_tour[i]], node_color='r')
-            plt.savefig(fname="img.jpg")
-            img = cv2.imread("img.jpg")
+            plt.savefig(fname="img.png")
+            img = cv2.imread("img.png")
             video_output.write(img)
             nx.draw_networkx_nodes(graph_img, pos, [euler_tour[i]])
             nx.draw_networkx_edges(graph_img, pos, [(euler_tour[i], euler_tour[i+1])], width=2.0, edge_color='r')
             nx.draw_networkx_nodes(graph_img, pos, [euler_tour[i + 1]], node_color='r')
-            plt.savefig(fname="img.jpg")
-            img = cv2.imread("img.jpg")
+            plt.savefig(fname="img.png")
+            img = cv2.imread("img.png")
             # Record the last frame for more duration
             if i == len(euler_tour) - 2:
                 for _ in range(4):
@@ -90,7 +90,7 @@ class Graph:
                 video_output.write(img)
         video_output.release()
         cv2.destroyAllWindows()
-        os.system("rm -rf img.jpg")
+        os.system("rm -rf img.png")
 
 
 """
