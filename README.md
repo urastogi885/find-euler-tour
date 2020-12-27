@@ -43,7 +43,7 @@ _|V|_.
 ```
 cd <your_worspace>/
 git clone https://github.com/urastogi885/find-euler-tour.git
-cd find-euler-path/
+cd find-euler-tour/
 ```
 - Compile the source to create an executable
 ```
