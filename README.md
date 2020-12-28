@@ -15,10 +15,18 @@ for further understanding of the code.
 
 <p align="center">
   <img src="https://github.com/urastogi885/find-euler-tour/blob/main/images/euler_tour.gif">
-  <br><b>Figure 1 - An Euler-tour for the graph described in in5.txt</b><br>
+  <br><b>Figure 1 - An Euler Tour found for the above graph</b><br>
 </p>
 
 The graph for the above Euler tour can be accessed from [here](https://github.com/urastogi885/find-euler-tour/blob/main/input/in5.txt).
+
+## Dependencies
+- The algorithm to find the euler tour has been implemented in C so only GCC is required to create executable.
+- The animation part of the project has been implemented in Python and has the following dependencies:
+  - Opencv-python
+  - Numpy
+  - Networkx
+  - Matplotlib
 
 ## Input Format
 - The graph is stored in a adjacent list format. In each of the input graphs, vertices are numbered from 1 to
@@ -44,6 +52,7 @@ _|V|_.
 - Each row lists edges from a vertex of the graph.
 
 ## Run
+- The following instructions are for Linux-based system. Use parallels for Windows and MacOS.
 - Open the terminal, move into your workspace, clone the repository, and move into the project directory.
 ```
 cd <your_worspace>/
